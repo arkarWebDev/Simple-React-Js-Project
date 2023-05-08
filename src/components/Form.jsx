@@ -1,31 +1,38 @@
-import { useState } from "react";
+import { useRef } from "react";
 import Card from "./Card";
 
 const Form = (props) => {
-  const [name, setName] = useState("");
-  const [live, setLive] = useState("");
-  const [email, setEmail] = useState("");
+  const nameInputRef = useRef();
+  const liveInputRef = useRef();
+  const emailInputRef = useRef();
 
   const addUser = (event) => {
     event.preventDefault();
     if (
-      name.trim().length === 0 ||
-      live.trim().length === 0 ||
-      email.trim().length === 0
+      nameInputRef.current.value.trim().length === 0 ||
+      liveInputRef.current.value.trim().length === 0 ||
+      emailInputRef.current.value.trim().length === 0
     ) {
-      alert("Please fill a invalid value for all inputs.");
+      alert("Please fill valid values for all inputs.");
       return;
     }
     const userInfo = {
-      name,
-      live,
-      email,
+      name: nameInputRef.current.value,
+      live: liveInputRef.current.value,
+      email: emailInputRef.current.value,
     };
     props.getUserInfo(userInfo);
 
-    setName("");
-    setLive("");
-    setEmail("");
+    // setName("");
+    // setLive("");
+    // setEmail("");
+
+    nameInputRef.current.value = "";
+    liveInputRef.current.value = "";
+    emailInputRef.current.value = "";
+
+    // console.log(nameInputRef.current.value);
+    // console.log(liveInputRef.current.value);
   };
 
   return (
@@ -33,36 +40,15 @@ const Form = (props) => {
       <form onSubmit={addUser}>
         <div className="form-div">
           <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            value={name}
-            onChange={(event) => {
-              setName(event.target.value);
-            }}
-          />
+          <input type="text" id="name" ref={nameInputRef} />
         </div>
         <div className="form-div">
           <label htmlFor="live">Live</label>
-          <input
-            type="text"
-            id="live"
-            value={live}
-            onChange={(event) => {
-              setLive(event.target.value);
-            }}
-          />
+          <input type="text" id="live" ref={liveInputRef} />
         </div>
         <div className="form-div">
           <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            id="email"
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
+          <input type="text" id="email" ref={emailInputRef} />
         </div>
         <button type="submit" className="btn">
           Add User
